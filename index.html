@@ -49,6 +49,22 @@
   .dl:hover{border-color:var(--acc);color:var(--acc)}
   footer{border-top:1px solid var(--line);padding:40px 0 70px;color:var(--mut);font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.05em;line-height:1.8}
   footer b{color:var(--ink)}
+  .styles-sec{border-top:1px solid var(--line);padding:64px 0 10px}
+  .styles-head .kick{font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.34em;text-transform:uppercase;color:var(--acc)}
+  .styles-head h2{font-size:clamp(32px,6vw,60px);font-weight:700;letter-spacing:-.02em;margin:.24em 0 .3em}
+  .styles-head p{color:var(--mut);max-width:660px;font-size:16px;line-height:1.55}
+  .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding:34px 0 44px}
+  .scard{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg2);transition:transform .3s,border-color .3s}
+  .scard:hover{border-color:rgba(216,162,74,.4);transform:translateY(-4px)}
+  .sposter{position:relative;aspect-ratio:9/16;background-size:cover;background-position:center;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .sposter video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3}
+  .sposter.noplay{cursor:default;background:linear-gradient(160deg,#1a1c1e,#0f1112)}
+  .sposter .play{width:56px;height:56px;font-size:18px}
+  .slabel{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .scard.proven .slabel{color:var(--acc2)}
+  .sbody{padding:15px 16px 18px}
+  .sbody h3{font-size:20px;font-weight:600}
+  .sbody p{color:var(--mut);font-size:13.5px;line-height:1.45;margin-top:6px}
 </style></head>
 <body>
 <div class="grain"></div>
@@ -106,13 +122,29 @@
       </div>
     </article>
   </div>
+  <section class="styles-sec">
+    <div class="styles-head"><div class="kick">Style library</div><h2>Never the same look twice.</h2><p>Every project starts from a distinct, authored style, chosen for the concept. No template, no AI look. Tap a demo to play.</p></div>
+    <div class="sgrid">
+    <article class="scard proven"><div class="sposter noplay"><span class="slabel">Proven</span></div><div class="sbody"><h3>Cinematic</h3><p>Real footage, film grain, kinetic captions. Mood and brand.</p></div></article>
+<article class="scard proven"><div class="sposter noplay"><span class="slabel">Proven</span></div><div class="sbody"><h3>Editorial / Print</h3><p>Typographic, paper, hard cuts. Premium and considered.</p></div></article>
+<article class="scard proven"><div class="sposter noplay"><span class="slabel">Proven</span></div><div class="sbody"><h3>Motion-Graphics</h3><p>Modular cards, UI, diagrams. Product and feature.</p></div></article>
+<article class="scard proven"><div class="sposter noplay"><span class="slabel">Proven</span></div><div class="sbody"><h3>Product Demo</h3><p>Real screen capture, cursor, callouts. Apps and SaaS.</p></div></article>
+<article class="scard demo"><div class="sposter" data-src="styles/kinetic.mp4" style="background-image:url('styles/kinetic.jpg')"><button class="play">&#9654;</button></div><div class="sbody"><h3>Kinetic-Type</h3><p>Bold expressive type, broken grid, no footage. Punchy hooks.</p></div></article>
+<article class="scard demo"><div class="sposter" data-src="styles/analog.mp4" style="background-image:url('styles/analog.jpg')"><button class="play">&#9654;</button></div><div class="sbody"><h3>Analog / Nostalgia</h3><p>Grain, VHS, scanlines, date-stamp. Warm, tactile, imperfect.</p></div></article>
+<article class="scard demo"><div class="sposter" data-src="styles/data.mp4" style="background-image:url('styles/data.jpg')"><button class="play">&#9654;</button></div><div class="sbody"><h3>Data-Story</h3><p>Count-ups, real-sales charts, coverage stats. Data and research.</p></div></article>
+<article class="scard demo"><div class="sposter" data-src="styles/minimal.mp4" style="background-image:url('styles/minimal.jpg')"><button class="play">&#9654;</button></div><div class="sbody"><h3>Minimal / Cinemagraph</h3><p>Calm, spacious, restrained type, subtle motion. Luxury.</p></div></article>
+<article class="scard planned"><div class="sposter noplay"><span class="slabel">Planned</span></div><div class="sbody"><h3>Mixed-Media / Collage</h3><p>Paper, tape, cutouts, scans, jump-cuts, grit.</p></div></article>
+<article class="scard planned"><div class="sposter noplay"><span class="slabel">Planned</span></div><div class="sbody"><h3>Before / After</h3><p>Split or wipe transformation reveal. Results-driven.</p></div></article>
+<article class="scard planned"><div class="sposter noplay"><span class="slabel">Planned</span></div><div class="sbody"><h3>3D-Depth</h3><p>Depth-parallax, floating layers, dimensional type. Premium/tech.</p></div></article>
+    </div>
+  </section>
   <footer>
     <b>Video Designer</b> — a private studio engine. Each project keeps its footage, brand grade, sources &amp; license.<br>
     New video: say <b>“new video: [brand]”</b> — I research, source real footage, build in the engine, render, and add it here.
   </footer>
 </div>
 <script>
-document.querySelectorAll('.poster').forEach(function(p){
+document.querySelectorAll('[data-src]').forEach(function(p){
   p.addEventListener('click', function(){
     if(p.querySelector('video')) return;
     var v=document.createElement('video');
