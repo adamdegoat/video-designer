@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Video Designer — Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0c0d;--bg2:#141618;--ink:#ece7dd;--mut:#8b8b83;--line:rgba(236,231,221,.12);--acc:#d8a24a;--acc2:#79c9a6}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.045;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+  header{padding:clamp(56px,9vw,120px) 0 40px;border-bottom:1px solid var(--line);position:relative}
+  .kick{font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.34em;text-transform:uppercase;color:var(--acc)}
+  h1{font-size:clamp(52px,11vw,132px);font-weight:700;line-height:.92;letter-spacing:-.03em;margin:.24em 0 .1em}
+  h1 em{font-style:normal;color:var(--mut)}
+  .sub{display:flex;flex-wrap:wrap;gap:26px;align-items:baseline;color:var(--mut);font-family:'Space Mono',monospace;font-size:14px;letter-spacing:.04em;margin-top:22px}
+  .sub b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:clamp(20px,3vw,40px);padding:52px 0 90px}
+  .card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg2);transition:transform .35s cubic-bezier(.2,.7,.3,1),border-color .35s}
+  .card:hover{transform:translateY(-5px);border-color:rgba(216,162,74,.4)}
+  .poster{position:relative;aspect-ratio:9/16;background-size:cover;background-position:center;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .poster::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,12,13,.25),rgba(11,12,13,0) 30%,rgba(11,12,13,.55));transition:opacity .3s}
+  .poster video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3}
+  .play{position:relative;z-index:2;width:74px;height:74px;border-radius:50%;border:1.5px solid rgba(236,231,221,.7);background:rgba(11,12,13,.32);backdrop-filter:blur(4px);color:var(--ink);font-size:24px;cursor:pointer;display:grid;place-items:center;padding-left:5px;transition:transform .3s,background .3s}
+  .poster:hover .play{transform:scale(1.08);background:var(--acc);border-color:var(--acc);color:#1a1204}
+  .dur{position:absolute;bottom:14px;right:14px;z-index:2;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.05em;background:rgba(11,12,13,.6);padding:4px 9px;border-radius:6px}
+  .badge.status{position:absolute;top:14px;left:14px;z-index:2;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc2);background:rgba(11,12,13,.55);border:1px solid rgba(121,201,166,.4);padding:5px 10px;border-radius:100px}
+  .body{padding:22px 22px 24px}
+  .metarow{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+  .body h2{font-size:30px;font-weight:600;letter-spacing:-.02em;margin:12px 0 4px}
+  .client{color:var(--mut);font-size:15px}
+  .tag{color:var(--ink);opacity:.82;font-size:15px;margin:14px 0 16px;line-height:1.4}
+  .badges{font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:var(--acc)}
+  .swatches{display:flex;gap:7px;margin:16px 0 4px}
+  .sw{width:20px;height:20px;border-radius:5px;border:1px solid rgba(255,255,255,.12)}
+  details{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+  summary{cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);list-style:none}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:'+ ';color:var(--acc)}
+  details[open] summary::before{content:'– '}
+  .brief{font-size:14.5px;line-height:1.6;color:var(--ink);opacity:.85;margin:14px 0}
+  .src{font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.6;color:var(--mut);margin-top:8px}
+  .src b{color:var(--ink)}
+  .dls{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .dl{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:9px 14px;border-radius:100px;transition:.25s}
+  .dl:hover{border-color:var(--acc);color:var(--acc)}
+  footer{border-top:1px solid var(--line);padding:40px 0 70px;color:var(--mut);font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.05em;line-height:1.8}
+  footer b{color:var(--ink)}
+</style></head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+  <header>
+    <div class="kick">Studio engine · Remotion</div>
+    <h1>Video<br>Designer<em>.</em></h1>
+    <div class="sub"><span><b>1</b> projects</span><span><b>1</b> videos</span><span>Real footage · cohesion grade · sound</span><span>Updated 04 Jul 2026</span></div>
+  </header>
+  <div class="grid">
+    
+    <article class="card">
+      <div class="poster" data-src="v/flow-with-chills/main-9x16.mp4" style="background-image:url('v/flow-with-chills/poster.jpg')">
+        <span class="badge status">Delivered</span>
+        <button class="play" aria-label="Play">▶</button>
+        <span class="dur">0:21</span>
+      </div>
+      <div class="body">
+        <div class="metarow"><span class="kind">Brand film</span><span class="date">04 Jul 2026</span></div>
+        <h2>Flow with Chills</h2>
+        <p class="client">Iylia — Flow with Chills</p>
+        <p class="tag">“Take your team where the wifi ends.”</p>
+        <div class="badges">9:16 · 21s · Music</div>
+        <div class="swatches"><span class="sw" style="background:#123A43"></span><span class="sw" style="background:#1C6E66"></span><span class="sw" style="background:#9FBEB9"></span><span class="sw" style="background:#E5904B"></span><span class="sw" style="background:#F2ECDF"></span></div>
+        <details>
+          <summary>Brief &amp; sources</summary>
+          <p class="brief">A 21-second cinematic brand film for a B2B corporate wellness retreat brand (Singapore + Johor). Arc: the grind, then the exhale, into the wild, meet the guide, and the team comes back lighter. Built from real cinematic stock footage graded to the brand&#x27;s Cool Dusk palette, with the site&#x27;s signature trail-and-waypoints motif drawn across the whole film.</p>
+          <p class="src"><b>Engine</b> · Remotion + real stock footage</p>
+          <p class="src"><b>Sources</b> · Footage &amp; music: Mixkit (Free License, commercial use). Founder photo: client-owned. Fonts: Clash Display + General Sans (Fontshare), DM Mono (OFL).</p>
+        </details>
+        <div class="dls"><a class="dl" href="v/flow-with-chills/main-9x16.mp4" download>↓ Main · 9:16 · with music</a></div>
+      </div>
+    </article>
+  </div>
+  <footer>
+    <b>Video Designer</b> — a private studio engine. Each project keeps its footage, brand grade, sources &amp; license.<br>
+    New video: say <b>“new video: [brand]”</b> — I research, source real footage, build in the engine, render, and add it here.
+  </footer>
+</div>
+<script>
+document.querySelectorAll('.poster').forEach(function(p){
+  p.addEventListener('click', function(){
+    if(p.querySelector('video')) return;
+    var v=document.createElement('video');
+    v.src=p.dataset.src; v.controls=true; v.autoplay=true; v.playsInline=true; v.loop=false;
+    p.appendChild(v);
+  });
+});
+</script>
+</body></html>
