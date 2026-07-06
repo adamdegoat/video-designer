@@ -414,6 +414,26 @@ document.querySelectorAll('[data-src]').forEach(function(p){
     p.appendChild(v);
   });
 });
+document.querySelectorAll('a.dl').forEach(function(a){
+  a.addEventListener('click', function(e){
+    if(!(navigator.canShare && navigator.share)) return; // desktop / Android Chrome: keep native download
+    var url = a.getAttribute('href');
+    var name = url.split('/').filter(Boolean).slice(-2).join('-'); // e.g. flow-with-chills-main-9x16.mp4
+    e.preventDefault();
+    var orig = a.textContent; a.textContent = '↓ preparing…';
+    fetch(url).then(function(r){ return r.blob(); }).then(function(blob){
+      var file = new File([blob], name, {type: blob.type || 'video/mp4'});
+      if(navigator.canShare({files:[file]})){
+        return navigator.share({files:[file]});
+      }
+      // share sheet can't take files (rare): fall back to opening the video so user can long-press → Save
+      window.location.href = url;
+    }).catch(function(err){
+      if(err && err.name === 'AbortError'){ return; } // user dismissed the share sheet
+      window.location.href = url; // any failure: fall back to the plain link
+    }).finally(function(){ a.textContent = orig; });
+  });
+});
 document.querySelectorAll('.copycap').forEach(function(b){
   b.addEventListener('click', function(){
     var ta = b.closest('.capwrap').querySelector('.captext');
